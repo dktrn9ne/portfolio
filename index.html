@@ -3,723 +3,177 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Maurice Thomas | Full-Stack Product & AI Builder</title>
+  <meta name="description" content="Maurice Thomas is a product-minded software engineer and founder building AI-powered tools, scalable platforms, and digital experiences.">
+  <title>Maurice Thomas | Product Engineer & Founder</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
-
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0b1020;
-      --panel: #121a33;
-      --panel-soft: #1b2440;
-      --line: #2b3560;
-      --text: #edf2ff;
-      --muted: #9ba4cf;
-      --accent: #6c7bff;
-      --accent2: #52d3ff;
-      --glow: rgba(84, 211, 255, 0.42);
-      --success: #57e3a4;
+    :root{--ink:#11100e;--paper:#f3efe7;--orange:#f15a24;--soft:#ddd6ca;--white:#fffdf8;--lime:#d9ff63}
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--ink);font-family:Manrope,sans-serif;overflow-x:hidden}
+    a{color:inherit}
+    .shell{width:min(1240px,calc(100% - 48px));margin:auto}
+    .nav{height:84px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--ink)}
+    .logo{font:800 20px Syne,sans-serif;text-decoration:none;letter-spacing:-.04em}
+    .logo i{color:var(--orange);font-style:normal}
+    .nav-links{display:flex;align-items:center;gap:30px;font:500 12px "DM Mono",monospace;text-transform:uppercase}
+    .nav-links a{text-decoration:none}
+    .nav-links a:hover{color:var(--orange)}
+    .nav-cta{padding:11px 16px;background:var(--ink);color:var(--white)}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;min-height:calc(100vh - 84px);border-bottom:1px solid var(--ink)}
+    .hero-copy{padding:76px 60px 64px 0;display:flex;flex-direction:column;justify-content:space-between}
+    .kicker{display:flex;align-items:center;gap:12px;font:500 12px "DM Mono",monospace;text-transform:uppercase;letter-spacing:.08em}
+    .kicker:before{content:"";width:38px;height:3px;background:var(--orange)}
+    h1{font:800 clamp(58px,7.3vw,112px)/.86 Syne,sans-serif;letter-spacing:-.075em;margin:34px 0}
+    h1 .outline{color:transparent;-webkit-text-stroke:2px var(--ink)}
+    .hero-bottom{display:grid;grid-template-columns:1fr auto;gap:30px;align-items:end}
+    .intro{font-size:17px;line-height:1.7;max-width:600px;margin:0}
+    .arrow{width:62px;height:62px;border:1px solid var(--ink);border-radius:50%;display:grid;place-items:center;text-decoration:none;font-size:24px;transition:.25s}
+    .arrow:hover{background:var(--orange);color:white;transform:rotate(45deg)}
+    .portrait-wrap{position:relative;background:var(--orange);min-height:680px;overflow:hidden}
+    .portrait-wrap:before{content:"MAURICE";position:absolute;top:22px;left:26px;z-index:2;font:500 11px "DM Mono";letter-spacing:.18em;color:white}
+    .portrait-wrap img{width:100%;height:100%;object-fit:cover;object-position:center;display:block;filter:saturate(.95) contrast(1.02)}
+    .availability{position:absolute;z-index:2;bottom:28px;left:28px;right:28px;background:var(--white);padding:18px 20px;display:flex;justify-content:space-between;gap:20px;align-items:center;font:500 11px "DM Mono";text-transform:uppercase}
+    .availability span:first-child:before{content:"";display:inline-block;width:9px;height:9px;background:#22a45a;border-radius:50%;margin-right:10px}
+    .ticker{overflow:hidden;background:var(--ink);color:var(--white);padding:18px 0;white-space:nowrap}
+    .ticker-track{display:inline-block;animation:marquee 25s linear infinite;font:500 13px "DM Mono";text-transform:uppercase;letter-spacing:.08em}
+    .ticker b{color:var(--orange);padding:0 24px}
+    @keyframes marquee{to{transform:translateX(-50%)}}
+    .section{padding:110px 0;border-bottom:1px solid var(--ink)}
+    .section-head{display:grid;grid-template-columns:180px 1fr;gap:40px;margin-bottom:58px}
+    .section-num{font:500 12px "DM Mono";color:var(--orange)}
+    h2{font:700 clamp(40px,5vw,72px)/.98 Syne,sans-serif;letter-spacing:-.055em;margin:0;max-width:900px}
+    .positioning{display:grid;grid-template-columns:1.15fr .85fr;gap:70px}
+    .positioning .large{font-size:clamp(25px,3vw,42px);line-height:1.25;letter-spacing:-.035em;margin:0}
+    .positioning .body{font-size:16px;line-height:1.8;margin:0}
+    .focus-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--ink);margin-top:70px}
+    .focus{padding:30px;min-height:250px;border-right:1px solid var(--ink);display:flex;flex-direction:column;justify-content:space-between;transition:.25s}
+    .focus:last-child{border:0}.focus:hover{background:var(--orange);color:white}
+    .focus .n{font:500 11px "DM Mono"}.focus h3{font:700 26px/1.08 Syne;margin:0;letter-spacing:-.03em}
+    .focus p{font-size:14px;line-height:1.55;margin:12px 0 0}
+    .dark{background:var(--ink);color:var(--white)}
+    .work-list{border-top:1px solid #48443f}
+    .work-item{display:grid;grid-template-columns:70px 1fr 1.2fr auto;gap:30px;align-items:center;padding:36px 0;border-bottom:1px solid #48443f}
+    .work-item .num{font:500 11px "DM Mono";color:var(--orange)}
+    .work-item h3{font:700 clamp(25px,3vw,38px) Syne;margin:0;letter-spacing:-.04em}
+    .work-item p{color:#bdb7ae;line-height:1.65;margin:0;font-size:14px}
+    .tag{border:1px solid #6a645c;border-radius:50px;padding:8px 12px;font:400 10px "DM Mono";text-transform:uppercase;white-space:nowrap}
+    .experience-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--ink);border:1px solid var(--ink)}
+    .role{background:var(--paper);padding:36px;min-height:260px}
+    .role small{font:500 11px "DM Mono";text-transform:uppercase;color:var(--orange)}
+    .role h3{font:700 27px Syne;margin:50px 0 8px;letter-spacing:-.035em}
+    .role .company{font-weight:700}.role p{font-size:14px;line-height:1.65;color:#554f48}
+    .contact{background:var(--orange);padding:110px 0;color:white}
+    .contact h2{font-size:clamp(52px,8vw,118px);max-width:1100px}
+    .contact-row{margin-top:55px;display:flex;justify-content:space-between;align-items:end;gap:30px}
+    .contact-copy{max-width:550px;font-size:17px;line-height:1.7}
+    .contact-links{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+    .contact-links a{padding:14px 18px;border:1px solid white;text-decoration:none;font:500 11px "DM Mono";text-transform:uppercase;transition:.2s}
+    .contact-links a:hover{background:white;color:var(--orange)}
+    footer{background:var(--ink);color:#8f8981;padding:24px 0;font:400 10px "DM Mono";text-transform:uppercase}
+    .footer-row{display:flex;justify-content:space-between;gap:20px}
+    .reveal{animation:rise .7s both}
+    @keyframes rise{from{opacity:0;transform:translateY(24px)}}
+    @media(max-width:900px){
+      .shell{width:min(100% - 30px,1240px)}.nav-links a:not(.nav-cta){display:none}
+      .hero{grid-template-columns:1fr}.hero-copy{padding:60px 0}.portrait-wrap{min-height:620px}
+      .section{padding:80px 0}.section-head{grid-template-columns:1fr;gap:18px}
+      .positioning{grid-template-columns:1fr;gap:30px}.focus-grid{grid-template-columns:1fr}
+      .focus{border-right:0;border-bottom:1px solid var(--ink);min-height:210px}
+      .work-item{grid-template-columns:45px 1fr}.work-item p,.work-item .tag{grid-column:2}
+      .experience-grid{grid-template-columns:1fr}.contact-row{align-items:flex-start;flex-direction:column}
+      .contact-links{justify-content:flex-start}
     }
-
-    * { box-sizing: border-box; }
-
-    html {
-      font-family: "Inter", system-ui, -apple-system, Segoe UI, sans-serif;
-      scroll-behavior: smooth;
-      background: var(--bg);
-      color: var(--text);
+    @media(max-width:560px){
+      .nav{height:70px}.nav-links{gap:10px}.nav-cta{padding:10px}
+      .hero{min-height:auto}h1{font-size:54px}.hero-bottom{grid-template-columns:1fr}.arrow{display:none}
+      .portrait-wrap{min-height:490px}.availability{left:14px;right:14px;bottom:14px;display:block}.availability span{display:block;margin:6px 0}
+      .section{padding:64px 0}.focus-grid{margin-top:48px}.role{padding:28px}
+      .work-item{padding:28px 0;gap:16px}.contact{padding:70px 0}.contact h2{font-size:48px}
+      .footer-row{flex-direction:column}
     }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at 20% 10%, rgba(108, 123, 255, 0.18), transparent 22%),
-        radial-gradient(circle at 80% 20%, rgba(84, 211, 255, 0.16), transparent 24%),
-        linear-gradient(180deg, #090d1a 0%, #0d1428 38%, #0f1730 100%);
-      color: var(--text);
-      overflow-x: hidden;
-    }
-
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      background-image:
-        linear-gradient(to right, transparent 95%, rgba(255,255,255,0.02) 97%),
-        linear-gradient(to bottom, transparent 95%, rgba(255,255,255,0.02) 97%);
-      background-size: 68px 68px;
-      opacity: 0.32;
-      z-index: 0;
-    }
-
-    .wrap {
-      width: min(1120px, 94vw);
-      margin: 0 auto;
-      position: relative;
-      z-index: 1;
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      backdrop-filter: blur(16px);
-      background: rgba(11, 16, 32, 0.65);
-      border-bottom: 1px solid var(--line);
-    }
-
-    .topbar {
-      height: 74px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .brand {
-      display: flex;
-      align-items: baseline;
-      gap: 12px;
-      font-family: "Space Grotesk", "Inter", sans-serif;
-      letter-spacing: 0.02em;
-      text-transform: uppercase;
-      font-weight: 700;
-    }
-
-    .brand .name {
-      color: var(--text);
-      font-size: 20px;
-    }
-
-    .brand .dot {
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 16px var(--glow);
-      margin-left: 3px;
-      margin-right: 2px;
-    }
-
-    .brand .tagline {
-      font-size: 11px;
-      color: var(--muted);
-      margin-top: 2px;
-    }
-
-    nav ul {
-      list-style: none;
-      margin: 0;
-      display: flex;
-      gap: 14px;
-      padding: 0;
-    }
-
-    nav a {
-      text-decoration: none;
-      color: var(--muted);
-      font-size: 14px;
-      letter-spacing: 0.02em;
-      padding: 8px 12px;
-      border-radius: 999px;
-      transition: all 0.2s ease;
-    }
-
-    nav a:hover {
-      color: var(--text);
-      background: rgba(255, 255, 255, 0.06);
-    }
-
-    main {
-      padding: 60px 0 100px;
-      display: grid;
-      gap: 48px;
-    }
-
-    .hero {
-      display: grid;
-      grid-template-columns: 1.15fr 0.85fr;
-      gap: 36px;
-      align-items: center;
-      padding: 42px 0 26px;
-    }
-
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 10px;
-      padding: 7px 14px;
-      border-radius: 999px;
-      background: rgba(108, 123, 255, 0.12);
-      border: 1px solid rgba(108, 123, 255, 0.45);
-      color: var(--accent);
-      margin-bottom: 14px;
-      font-family: "Space Grotesk", sans-serif;
-      letter-spacing: 0.06em;
-      font-size: 12px;
-    }
-
-    h1 {
-      font-family: "Space Grotesk", "Inter", sans-serif;
-      margin: 0;
-      font-size: clamp(2.4rem, 6vw, 4.3rem);
-      line-height: 1.05;
-      max-width: 12ch;
-    }
-
-    .hero h1 span {
-      display: block;
-      color: transparent;
-      background: linear-gradient(100deg, #edf2ff 2%, #9ba4cf 55%, #52d3ff 100%);
-      -webkit-background-clip: text;
-      background-clip: text;
-    }
-
-    .lead {
-      margin-top: 16px;
-      margin-bottom: 24px;
-      font-size: 1.05rem;
-      color: #d4dcff;
-      line-height: 1.7;
-      max-width: 64ch;
-    }
-
-    .pills {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .pill {
-      font-size: 12px;
-      border-radius: 999px;
-      padding: 8px 12px;
-      border: 1px solid var(--line);
-      color: #cdd4ff;
-      background: rgba(255,255,255,0.03);
-    }
-
-    .cta {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .btn {
-      display: inline-block;
-      text-decoration: none;
-      border-radius: 12px;
-      font-size: 14px;
-      font-weight: 600;
-      padding: 12px 16px;
-      transition: all 0.25s ease;
-    }
-
-    .btn.primary {
-      color: #0a0f21;
-      background: linear-gradient(120deg, var(--accent), var(--accent2));
-      box-shadow: 0 0 0 1px rgba(108, 123, 255, 0.15), 0 12px 24px rgba(80, 112, 255, 0.2);
-    }
-
-    .btn.ghost {
-      color: var(--text);
-      border: 1px solid var(--line);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 10px 22px rgba(5, 12, 30, 0.48);
-    }
-
-    .hero-card {
-      border-radius: 24px;
-      border: 1px solid var(--line);
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(15,21,41,0.75));
-      padding: 24px;
-      min-height: 300px;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .hero-photo {
-      width: 100%;
-      border-radius: 16px;
-      aspect-ratio: 1 / 1;
-      border: 1px solid rgba(255,255,255,0.2);
-      background:
-        radial-gradient(circle at 30% 20%, rgba(82,211,255,0.35), transparent 40%),
-        linear-gradient(145deg, #202a4b, #121a32);
-      position: relative;
-      display: flex;
-      align-items: flex-end;
-      justify-content: flex-start;
-      padding: 22px;
-    }
-
-    .avatar {
-      width: 110px;
-      height: 110px;
-      border-radius: 50%;
-      border: 2px solid rgba(255,255,255,0.35);
-      background: linear-gradient(140deg, #0f1731, #293462);
-      display: grid;
-      place-items: center;
-      font-weight: 700;
-      font-size: 34px;
-      font-family: "Space Grotesk", sans-serif;
-      color: white;
-      text-shadow: 0 4px 22px rgba(84,211,255,0.45);
-    }
-
-    .status {
-      margin-top: 16px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #bbf6e8;
-      background: rgba(87, 227, 164, 0.12);
-      border: 1px solid rgba(87, 227, 164, 0.35);
-      padding: 7px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 600;
-    }
-
-    .status::before {
-      content: "";
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--success);
-      box-shadow: 0 0 0 6px rgba(87, 227, 164, 0.2);
-    }
-
-    .stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding-top: 8px;
-    }
-
-    .stat {
-      padding: 16px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .stat .n {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.7rem;
-      margin: 0;
-      color: #f5f8ff;
-    }
-
-    .stat .l {
-      margin: 6px 0 0;
-      color: var(--muted);
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .panel {
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      padding: 30px;
-      background: linear-gradient(180deg, rgba(18, 26, 51, 0.84), rgba(17, 22, 42, 0.9));
-    }
-
-    section h2 {
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1.8rem;
-      margin-top: 0;
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .eyebrow {
-      font-size: 11px;
-      text-transform: uppercase;
-      color: var(--muted);
-      letter-spacing: 0.16em;
-      margin-bottom: 10px;
-    }
-
-    .card-grid {
-      margin-top: 20px;
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 16px;
-    }
-
-    .card {
-      padding: 20px;
-      border-radius: 16px;
-      border: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.02);
-    }
-
-    .card .role {
-      margin: 0;
-      font-size: 1.05rem;
-      font-family: "Space Grotesk", sans-serif;
-      color: #eef3ff;
-    }
-
-    .card .org {
-      margin: 4px 0 0;
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .card .desc {
-      margin-top: 12px;
-      color: #c6cef3;
-      line-height: 1.6;
-      font-size: 14px;
-    }
-
-    .skill-wrap {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-
-    .skill-wrap span {
-      padding: 6px 10px;
-      border-radius: 999px;
-      border: 1px solid rgba(255,255,255,0.16);
-      background: rgba(255,255,255,0.04);
-      color: #dce2fd;
-      font-size: 12px;
-    }
-
-    .projects {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
-      margin-top: 18px;
-    }
-
-    .project {
-      border: 1px solid var(--line);
-      border-radius: 16px;
-      background: rgba(255,255,255,0.02);
-      padding: 20px;
-    }
-
-    .project .title {
-      margin: 0;
-      font-family: "Space Grotesk", sans-serif;
-      font-size: 1rem;
-      color: #f0f3ff;
-    }
-
-    .project .sub {
-      font-size: 12px;
-      color: #a9b3e4;
-      margin-top: 6px;
-    }
-
-    .project p {
-      margin-top: 10px;
-      color: #c7d0f8;
-      font-size: 14px;
-      line-height: 1.6;
-    }
-
-    .project ul {
-      margin: 12px 0 0;
-      padding-left: 18px;
-      color: #c6d0f0;
-      font-size: 13px;
-      line-height: 1.8;
-    }
-
-    .cta-strip {
-      margin-top: 16px;
-      display: flex;
-      justify-content: space-between;
-      gap: 14px;
-      align-items: center;
-      padding-top: 16px;
-      border-top: 1px dashed var(--line);
-      color: #d8e0ff;
-      font-size: 14px;
-    }
-
-    .contacts {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 16px;
-    }
-
-    .contact-link {
-      text-decoration: none;
-      color: #e2e8ff;
-      padding: 13px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.03);
-      display: block;
-      text-align: center;
-      font-weight: 600;
-      letter-spacing: 0.01em;
-    }
-
-    footer {
-      margin-top: 28px;
-      padding: 18px 0 22px;
-      color: var(--muted);
-      border-top: 1px solid var(--line);
-      text-align: center;
-      font-size: 13px;
-    }
-
-    @media (max-width: 980px) {
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .stats {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .card-grid,
-      .projects,
-      .contacts {
-        grid-template-columns: 1fr;
-      }
-
-      nav ul {
-        gap: 8px;
-      }
-
-      nav a {
-        padding: 7px;
-      }
-
-      .topbar {
-        gap: 14px;
-        flex-wrap: wrap;
-        height: auto;
-        padding: 14px 0;
-      }
-    }
-
-    @media (max-width: 640px) {
-      .hero-photo {
-        min-height: 250px;
-      }
-      .stats {
-        grid-template-columns: 1fr;
-      }
-      .cta {
-        flex-direction: column;
-        width: 100%;
-      }
-      .btn {
-        width: 100%;
-        text-align: center;
-      }
-    }
+    @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.ticker-track,.reveal{animation:none}}
   </style>
 </head>
 <body>
-  <header>
-    <div class="wrap topbar">
-      <div class="brand">
-        <span class="name">Maurice Thomas</span>
-        <span class="dot"></span>
-        <span class="tagline">Full-Stack Product Builder</span>
-      </div>
-      <nav>
-        <ul>
-          <li><a href="#role">Role</a></li>
-          <li><a href="#experience">Experience</a></li>
-          <li><a href="#work">Projects</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
+  <header class="shell nav">
+    <a class="logo" href="#">Maurice Thomas<i>.</i></a>
+    <nav class="nav-links" aria-label="Primary navigation">
+      <a href="#about">About</a><a href="#work">Work</a><a href="#experience">Experience</a>
+      <a class="nav-cta" href="mailto:contact@toledoenterprises.com">Let's talk</a>
+    </nav>
   </header>
 
-  <main class="wrap">
-    <section class="hero">
-      <div>
-        <div class="badge">Brand Positioning Refresh</div>
-        <h1><span>Software developer</span> focused on AI automation, scalable web platforms, and creator-first product strategy.</h1>
-        <p class="lead">
-          I help teams convert complex ideas into shipping software. Over the last decade, Ive
-          led founder-led ventures, built AI workflows, and created branded digital experiences across
-          software, music, and media operations.
-        </p>
-
-        <div class="pills">
-          <span class="pill">Next.js &amp; TypeScript</span>
-          <span class="pill">Node.js / API Design</span>
-          <span class="pill">Claude API Workflows</span>
-          <span class="pill">Vercel / GitHub</span>
-          <span class="pill">Brand + Product Thinking</span>
+  <main>
+    <section class="shell hero">
+      <div class="hero-copy reveal">
+        <div>
+          <div class="kicker">Product Engineer · Founder · Creative</div>
+          <h1>I BUILD<br><span class="outline">WHAT'S</span><br>NEXT.</h1>
         </div>
-
-        <div class="cta">
-          <a class="btn primary" href="#work">View Selected Work</a>
-          <a class="btn ghost" href="#contact">Start a Conversation</a>
+        <div class="hero-bottom">
+          <p class="intro">I'm Maurice Thomas, a product-minded engineer turning ambitious ideas into useful, scalable software. My work lives where applied AI, business strategy, and culture meet.</p>
+          <a class="arrow" href="#about" aria-label="Explore portfolio">↓</a>
         </div>
       </div>
+      <div class="portrait-wrap reveal">
+        <img src="assets/maurice-thomas.png" alt="Portrait of Maurice Thomas" width="675" height="665">
+        <div class="availability"><span>Open to the right opportunity</span><span>Austin, Texas · Remote</span></div>
+      </div>
+    </section>
 
-      <div class="hero-card">
-        <div class="hero-photo">
-          <div class="avatar">MT</div>
-          <div class="hero-meta" style="margin-left: 16px; max-width: 220px;">
-            <div class="status">Open to Product & Engineering Leadership Roles</div>
-            <p style="margin-top: 14px; color: #dee5ff; line-height: 1.55; font-size: 14px;">
-              Austin-based founder and engineer creating practical AI systems that improve revenue and user trust.
-            </p>
-          </div>
+    <div class="ticker" aria-hidden="true"><div class="ticker-track">FULL-STACK DEVELOPMENT <b>✦</b> APPLIED AI <b>✦</b> PRODUCT STRATEGY <b>✦</b> FOUNDER-LED EXECUTION <b>✦</b> CREATIVE TECHNOLOGY <b>✦</b> FULL-STACK DEVELOPMENT <b>✦</b> APPLIED AI <b>✦</b> PRODUCT STRATEGY <b>✦</b> FOUNDER-LED EXECUTION <b>✦</b> CREATIVE TECHNOLOGY <b>✦</b></div></div>
+
+    <section id="about" class="section">
+      <div class="shell">
+        <div class="section-head"><span class="section-num">01 / POSITIONING</span><h2>Technical depth. Business instinct. Creative range.</h2></div>
+        <div class="positioning">
+          <p class="large">I don't just write code. I find the clearest path from a real problem to a product people can use.</p>
+          <p class="body">Over the last decade, I've moved between software, media, music, and entrepreneurship. That range helps me see the whole system: the customer, the workflow, the technology, and the story. I'm pursuing product engineering and technical leadership roles where ownership, speed, and sound judgment matter.</p>
+        </div>
+        <div class="focus-grid">
+          <article class="focus"><span class="n">01</span><div><h3>Product Engineering</h3><p>Full-stack platforms, internal tools, APIs, and polished user experiences designed to ship and scale.</p></div></article>
+          <article class="focus"><span class="n">02</span><div><h3>Applied AI</h3><p>Practical AI workflows that reduce friction, support decisions, and make complex operations easier.</p></div></article>
+          <article class="focus"><span class="n">03</span><div><h3>Founder Thinking</h3><p>Comfort with ambiguity, customer needs, business constraints, and taking an idea all the way to market.</p></div></article>
         </div>
       </div>
     </section>
 
-    <section class="stats panel">
-      <div class="stat">
-        <p class="n">15+</p>
-        <p class="l">Products Shipped</p>
-      </div>
-      <div class="stat">
-        <p class="n">4+</p>
-        <p class="l">Businesses Operated</p>
-      </div>
-      <div class="stat">
-        <p class="n">100+</p>
-        <p class="l">Client Touchpoints Built</p>
-      </div>
-      <div class="stat">
-        <p class="n">10+</p>
-        <p class="l">Years in Tech &amp; Media</p>
+    <section id="work" class="section dark">
+      <div class="shell">
+        <div class="section-head"><span class="section-num">02 / SELECTED WORK</span><h2>Systems built to move real work forward.</h2></div>
+        <div class="work-list">
+          <article class="work-item"><span class="num">01</span><h3>M3 Solutions Platform</h3><p>AI-assisted credit operations platform with a customer-facing assistant, structured dispute workflows, and partner tools built for repeatable service delivery.</p><span class="tag">AI · SaaS · Operations</span></article>
+          <article class="work-item"><span class="num">02</span><h3>M3 Custom CRM</h3><p>A focused lead and case-management system with a five-stage pipeline, document exports, and centralized tracking for day-to-day operations.</p><span class="tag">Product · Workflow · PDF</span></article>
+          <article class="work-item"><span class="num">03</span><h3>Job-Hunter Engine</h3><p>A Next.js application that helps tailor resumes to specific roles and organize a faster, more intentional job-search process.</p><span class="tag">Next.js · Automation</span></article>
+        </div>
       </div>
     </section>
 
-    <section id="role" class="panel">
-      <div class="eyebrow">Current positioning</div>
-      <h2>Who I am professionally now</h2>
-      <p style="margin: 10px 0 0; color: #ced7f9; line-height: 1.7; max-width: 72ch;">
-        I am currently building at the edge of three momentum areas: full-stack execution,
-        applied AI systems, and creator economy products.
-      </p>
-      <div class="skill-wrap" style="margin-top: 14px;">
-        <span>Founder, Technology Strategy</span>
-        <span>AI Product Engineer</span>
-        <span>Senior-Level Problem Solver</span>
+    <section id="experience" class="section">
+      <div class="shell">
+        <div class="section-head"><span class="section-num">03 / EXPERIENCE</span><h2>A career built across technology, business, and culture.</h2></div>
+        <div class="experience-grid">
+          <article class="role"><small>2023 — Present</small><h3>Founder & CEO</h3><div class="company">Toledo Holdings</div><p>Building and operating ventures spanning AI tools, digital products, media, and business infrastructure.</p></article>
+          <article class="role"><small>2023 — Present</small><h3>Full-Stack Developer</h3><div class="company">Library Labs</div><p>Developing automation workflows, credit-intelligence systems, and SaaS experiences with modern web technologies.</p></article>
+          <article class="role"><small>2015 — Present</small><h3>Creative Director & Producer</h3><div class="company">DKTR N9NE LLC</div><p>Leading original music, brand strategy, digital distribution, direct-to-consumer experiences, and campaign execution.</p></article>
+          <article class="role"><small>2015 — 2020</small><h3>Music Journalist</h3><div class="company">HipHopDX</div><p>Translated culture and complex industry stories into clear, audience-first editorial coverage.</p></article>
+        </div>
       </div>
     </section>
 
-    <section id="experience" class="panel">
-      <div class="eyebrow">Experience</div>
-      <h2>Selected roles (latest updates)</h2>
-      <div class="card-grid">
-        <article class="card">
-          <h3 class="role">Founder &amp; CEO</h3>
-          <p class="org">Toledo Holdings — Austin, TX • 2023–Present</p>
-          <p class="desc">Architected a multi-entity enterprise with subsidiary operations spanning AI tools, media, and credit-tech workflow delivery.</p>
-          <div class="skill-wrap">
-            <span>Corporate Systems</span><span>Cap Table Planning</span><span>Growth Operations</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3 class="role">Full-Stack Developer (AI &amp; SaaS)</h3>
-          <p class="org">Library Labs — 2023–Present</p>
-          <p class="desc">Developed automation workflows, credit-intelligence systems, and user-facing SaaS applications with scalable architecture.</p>
-          <div class="skill-wrap">
-            <span>Node.js</span><span>Next.js</span><span>Claude API</span><span>PDF Automation</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3 class="role">Creative Director / Producer</h3>
-          <p class="org">DKTR N9NE LLC — 2015–Present</p>
-          <p class="desc">Produced and distributed original music catalog across digital channels, combining brand strategy with e-commerce and fan experience.</p>
-          <div class="skill-wrap">
-            <span>Brand Positioning</span><span>Campaign Builds</span><span>DTC Commerce</span>
-          </div>
-        </article>
-
-        <article class="card">
-          <h3 class="role">Music Journalist &amp; Content Producer</h3>
-          <p class="org">HipHopDX — 2015–2020</p>
-          <p class="desc">Published editorial coverage and music industry content; translated complex stories into audience-first formats.</p>
-          <div class="skill-wrap">
-            <span>Editorial Strategy</span><span>SEO</span><span>Content Systems</span>
-          </div>
-        </article>
+    <section id="contact" class="contact">
+      <div class="shell">
+        <div class="section-head"><span class="section-num" style="color:white">04 / CONTACT</span><h2>Let's build something people remember.</h2></div>
+        <div class="contact-row">
+          <p class="contact-copy">I'm interested in product engineering, applied AI, and technical leadership opportunities with teams that value initiative and original thinking.</p>
+          <div class="contact-links"><a href="mailto:contact@toledoenterprises.com">Email me</a><a href="https://github.com/dktrn9ne" target="_blank" rel="noopener">GitHub</a><a href="https://mthree.biz" target="_blank" rel="noopener">M3 Solutions</a></div>
+        </div>
       </div>
-    </section>
-
-    <section id="work" class="panel">
-      <div class="eyebrow">Casework</div>
-      <h2>Recent platform builds</h2>
-      <div class="projects">
-        <article class="project">
-          <h3 class="title">M3 Solutions Platform</h3>
-          <p class="sub">AI-assisted credit workflow for customer operations</p>
-          <p>Built Maya AI assistant, dispute-code workflows, and B2B partner portal for scalable support operations.</p>
-          <ul>
-            <li>Improved throughput through reusable AI prompts and standardized pipelines.</li>
-            <li>Built secure workflow automations around compliance-sensitive flows.</li>
-          </ul>
-        </article>
-
-        <article class="project">
-          <h3 class="title">M3 Custom CRM</h3>
-          <p class="sub">One-file internal operations dashboard</p>
-          <p>Designed a pipeline-driven CRM with PDF exports and modular dispute code tracking used in day-to-day lead management.</p>
-          <ul>
-            <li>5-stage lead lifecycle model with exportable legal packets.</li>
-            <li>Reduced manual updates by centralizing data into a single interface.</li>
-          </ul>
-        </article>
-
-        <article class="project">
-          <h3 class="title">Job-Hunter Resume Engine</h3>
-          <p class="sub">Position-targeted application optimization</p>
-          <p>Next.js-based tracker that tailors resumes against role-specific requirements and ATS expectations for each target company.</p>
-          <ul>
-            <li>Built role-specific output logic with concise, reusable formatting.</li>
-            <li>Optimized for quick resume refreshes and application velocity.</li>
-          </ul>
-        </article>
-      </div>
-    </section>
-
-    <section id="contact" class="panel">
-      <div class="eyebrow">Contact</div>
-      <h2>Lets build your next chapter</h2>
-      <p style="max-width: 64ch; color: #c7d2ff; line-height: 1.7;">
-        I am open to senior execution and build roles in full-stack engineering, AI-enabled platforms, and founder-facing product initiatives.
-      </p>
-      <div class="contacts">
-        <a class="contact-link" href="mailto:contact@toledoenterprises.com">Email: contact@toledoenterprises.com</a>
-        <a class="contact-link" href="https://mthree.biz" target="_blank" rel="noopener noreferrer">M3 Solutions</a>
-        <a class="contact-link" href="https://github.com/dktrn9ne" target="_blank" rel="noopener noreferrer">GitHub Profile</a>
-      </div>
-    </section>
-
-    <section class="cta-strip">
-      <span>Updated brand direction now emphasizes measurable execution, strategic AI fluency, and creator-led product positioning.</span>
-      <a href="#" class="btn primary" onclick="alert('Want a second version focused on specific role targets? Share 1-2 priorities and I\'ll tailor the copy.'); return false;">Need version 2?</a>
     </section>
   </main>
-
-  <footer class="wrap">© 2026 Maurice Thomas · Crafted for a stronger professional brand</footer>
+  <footer><div class="shell footer-row"><span>© 2026 Maurice Thomas</span><span>Engineering · Strategy · Culture</span></div></footer>
 </body>
 </html>
