@@ -1,6 +1,6 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const {lightPixel, coverCrop} = require('../assets/portrait-dither.js');
+const {lightPixel, coverCrop, paintDither} = require('../assets/portrait-dither.js');
 
 test('ordered dithering preserves black, white, and half-tone coverage', () => {
   for (const [luminance, expected] of [[0, 0], [0.5, 32], [1, 64]]) {
@@ -28,4 +28,14 @@ test('cover crop handles a wide container and identical aspect ratio', () => {
   assert.equal(width, 560);
   assert.equal(height, 280);
   assert.equal(y, 136);
+});
+test('removed background stays transparent and soft subject edges retain alpha', () => {
+  const source = new Uint8ClampedArray([255,255,255,0, 255,255,255,128, 0,0,0,255]);
+  const palette = [[11,11,12,255],[255,90,31,255]];
+  for (const variant of [0,1]) {
+    const result = paintDither(source, 3, 1, palette, variant);
+    assert.deepEqual([...result.slice(0,4)], [0,0,0,0]);
+    assert.deepEqual([...result.slice(4,8)], [255,90,31,128]);
+    assert.deepEqual([...result.slice(8,12)], [11,11,12,255]);
+  }
 });
