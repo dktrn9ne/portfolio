@@ -1,0 +1,11 @@
+{
+  "name": "maurice-portfolio-checks",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/portrait-dither.test.cjs",
+    "test:browser": "node tests/portrait-browser.cjs"
+  },
+  "devDependencies": {
+    "playwright": "1.63.0"
+  }
+}
