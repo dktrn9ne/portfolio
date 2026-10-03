@@ -19,7 +19,20 @@
     const sourceHeight = height / scale;
     return [(imageWidth - sourceWidth) / 2, (imageHeight - sourceHeight) / 2, sourceWidth, sourceHeight];
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { lightPixel, coverCrop };
+  function paintDither(pixels, width, height, palette, variant) {
+    const output = new Uint8ClampedArray(pixels.length);
+    for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
+      const index = (y * width + x) * 4;
+      if (pixels[index + 3] === 0) continue;
+      const luminance = (pixels[index] * 0.2126 + pixels[index + 1] * 0.7152 + pixels[index + 2] * 0.0722) / 255;
+      const shift = variant && luminance < 0.35 && (x * 13 + y * 7) % 23 === 0 ? 0.025 : 0;
+      output.set(palette[lightPixel(luminance + shift, x, y) ? 1 : 0], index);
+      // Keep source alpha: removed background never becomes an opaque dither field.
+      output[index + 3] = pixels[index + 3];
+    }
+    return output;
+  }
+  if (typeof module !== 'undefined' && module.exports) module.exports = { lightPixel, coverCrop, paintDither };
   if (typeof document === 'undefined') return;
 
   const portrait = document.querySelector('.portrait');
@@ -118,7 +131,7 @@
       const pixels = sampleContext.getImageData(0, 0, sample.width, sample.height).data;
       const styles = getComputedStyle(portrait);
       const colors = [styles.getPropertyValue('--dither-dark').trim() || '#0b0b0c',
-        styles.getPropertyValue('--dither-light').trim() || '#fffdf8'];
+        styles.getPropertyValue('--dither-light').trim() || '#ff5a1f'];
       frames = [0, 1].map(variant => {
         const frame = document.createElement('canvas');
         frame.width = sample.width;
@@ -130,12 +143,7 @@
           ctx.fillRect(0, 0, 1, 1);
           return ctx.getImageData(0, 0, 1, 1).data;
         });
-        for (let y = 0; y < frame.height; y++) for (let x = 0; x < frame.width; x++) {
-          const index = (y * frame.width + x) * 4;
-          const luminance = (pixels[index] * 0.2126 + pixels[index + 1] * 0.7152 + pixels[index + 2] * 0.0722) / 255;
-          const shift = variant && luminance < 0.35 && (x * 13 + y * 7) % 23 === 0 ? 0.025 : 0;
-          output.data.set(palette[lightPixel(luminance + shift, x, y) ? 1 : 0], index);
-        }
+        output.data.set(paintDither(pixels, frame.width, frame.height, palette, variant));
         ctx.putImageData(output, 0, 0);
         return frame;
       });
