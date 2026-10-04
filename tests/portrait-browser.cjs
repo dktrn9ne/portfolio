@@ -35,6 +35,8 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
         await p.locator('.portrait-dither').waitFor();
         await p.locator('.portrait').scrollIntoViewIfNeeded();
         assert.equal(await p.locator('.portrait img').getAttribute('alt'), 'Maurice Thomas');
+        assert.equal(await p.locator('.portrait img').getAttribute('src'), 'assets/maurice-thomas-cutout-v1.png');
+        assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(11, 11, 12)');
         assert.equal(await p.locator('.portrait-dither').getAttribute('aria-hidden'), 'true');
         const info = await p.locator('.portrait').evaluate(el => ({
           rect: el.getBoundingClientRect().toJSON(), canvas: el.querySelector('canvas').getBoundingClientRect().toJSON(),
@@ -45,19 +47,30 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
         assert.equal(info.canvas.height, info.image.height);
         const before = await sample(p);
         const colors = new Set();
+        let transparent = 0;
+        let opaque = 0;
         for (let i = 0; i < before.length; i += 4) {
-          assert.equal(before[i + 3], 255);
-          colors.add(before.slice(i, i + 3).join(','));
+          if (before[i + 3] === 0) transparent++;
+          if (before[i + 3] >= 250) {
+            opaque++;
+            const rgb = before.slice(i, i + 3);
+            const dark = rgb.every((value, channel) => Math.abs(value - [11,11,12][channel]) <= 1);
+            const orange = rgb.every((value, channel) => Math.abs(value - [255,90,31][channel]) <= 1);
+            assert.ok(dark || orange, `unexpected subject dither color: ${rgb}`);
+            colors.add(dark ? 'dark' : 'orange');
+          }
         }
-        assert.deepEqual([...colors].sort(), ['11,11,12', '255,253,248']);
+        assert.ok(transparent > 0 && opaque > 0, 'subject-only dither retains both removed background and opaque person');
+        assert.deepEqual([...colors].sort(), ['dark', 'orange']);
+        assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).getPropertyValue('--dither-light').trim()), '#ff5a1f');
         await p.locator('.portrait').screenshot({path: `${output}/after-${label}.png`});
         await p.locator('.portrait').dispatchEvent('pointermove', {clientX: info.rect.x + info.rect.width / 2,
           clientY: info.rect.y + info.rect.height / 2, pointerType: 'mouse'});
         const lens = await sample(p);
-        assert.ok(lens.some((value, index) => index % 4 === 3 && value === 0), 'lens reveals underlying color image');
+        assert.ok(lens.some((value, index) => index % 4 === 3 && value < before[index]), 'lens reveals underlying color subject');
         await p.locator('.portrait').screenshot({path: `${output}/after-${label}-lens.png`});
         await p.locator('.portrait').dispatchEvent('pointerleave');
-        assert.deepEqual(await sample(p), before, 'leaving restores full static dither');
+        assert.deepEqual(await sample(p), before, 'leaving restores static subject-only dither');
         const toggle = p.locator('.portrait-toggle');
         await toggle.focus();
         await p.keyboard.press('Enter');
@@ -104,10 +117,11 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
       const p = await page({viewport: {width: 390, height: 844}, isMobile: true, hasTouch: true, reducedMotion: 'reduce'});
       await p.locator('.portrait').scrollIntoViewIfNeeded();
       const box = await p.locator('.portrait').boundingBox();
+      const before = await sample(p);
       assert.equal(await p.locator('.portrait').dispatchEvent('pointerdown', {pointerType: 'touch', clientX: box.x + 180, clientY: box.y + 150}), undefined);
-      assert.ok((await sample(p)).some((v, i) => i % 4 === 3 && v === 0));
+      assert.ok((await sample(p)).some((v, i) => i % 4 === 3 && v < before[i]));
       await p.locator('.portrait').dispatchEvent('pointerup', {pointerType: 'touch'});
-      assert.ok((await sample(p)).every((v, i) => i % 4 !== 3 || v === 255));
+      assert.deepEqual(await sample(p), before);
       assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).touchAction), 'auto');
       await p.close();
     });
@@ -131,7 +145,7 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
       await p.close();
     });
     await check('image load failure preserves alt text and creates no canvas/toggle', async () => {
-      const p = await page({}, p => p.route('**/maurice-thomas.jpg', route => route.abort()));
+      const p = await page({}, p => p.route('**/maurice-thomas-cutout-v1.png', route => route.abort()));
       assert.equal(await p.locator('.portrait canvas').count(), 0);
       assert.equal(await p.locator('.portrait button').count(), 0);
       assert.equal(await p.locator('.portrait img').getAttribute('alt'), 'Maurice Thomas');
