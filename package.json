@@ -2,8 +2,8 @@
   "name": "maurice-portfolio-checks",
   "private": true,
   "scripts": {
-    "test": "node --test tests/portrait-dither.test.cjs",
-    "test:browser": "node tests/portrait-browser.cjs"
+    "test": "node --test tests/*.test.cjs",
+    "test:browser": "node tests/portrait-browser.cjs && node tests/ink-bloom-browser.cjs"
   },
   "devDependencies": {
     "playwright": "1.63.0"

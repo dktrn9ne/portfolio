@@ -1,4 +1,4 @@
-name: Portfolio portrait checks
+name: Portfolio visual checks
 
 on:
   pull_request:
@@ -29,5 +29,5 @@ jobs:
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: portrait-browser-evidence
-          path: test-results/portrait/
+          name: portfolio-browser-evidence
+          path: test-results/

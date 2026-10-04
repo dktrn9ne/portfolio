@@ -36,7 +36,7 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
         await p.locator('.portrait').scrollIntoViewIfNeeded();
         assert.equal(await p.locator('.portrait img').getAttribute('alt'), 'Maurice Thomas');
         assert.equal(await p.locator('.portrait img').getAttribute('src'), 'assets/maurice-thomas-cutout-v1.png');
-        assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).backgroundColor), 'rgb(11, 11, 12)');
+        assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
         assert.equal(await p.locator('.portrait-dither').getAttribute('aria-hidden'), 'true');
         const info = await p.locator('.portrait').evaluate(el => ({
           rect: el.getBoundingClientRect().toJSON(), canvas: el.querySelector('canvas').getBoundingClientRect().toJSON(),
