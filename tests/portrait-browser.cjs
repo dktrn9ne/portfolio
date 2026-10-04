@@ -36,6 +36,17 @@ const executablePath = process.env.PORTRAIT_BROWSER_PATH;
         await p.locator('.portrait').scrollIntoViewIfNeeded();
         assert.equal(await p.locator('.portrait img').getAttribute('alt'), 'Maurice Thomas');
         assert.equal(await p.locator('.portrait img').getAttribute('src'), 'assets/maurice-thomas-cutout-v1.png');
+        assert.equal(await p.locator('.portrait img').evaluate(el => getComputedStyle(el).objectFit), 'contain');
+        const fullBust = await p.locator('.portrait').evaluate(el => {
+          const image = el.querySelector('img'), canvas = el.querySelector('canvas');
+          const scale = Math.min(canvas.width / image.naturalWidth, canvas.height / image.naturalHeight);
+          const x = (canvas.width - image.naturalWidth * scale) / 2;
+          const y = (canvas.height - image.naturalHeight * scale) / 2;
+          return {square: Math.abs(el.clientWidth - el.clientHeight) <= 1,
+            alpha: [[355,490],[880,470],[150,900],[1100,900]].map(([sx,sy]) => canvas.getContext('2d').getImageData(Math.floor(x+sx*scale),Math.floor(y+sy*scale),1,1).data[3])};
+        });
+        assert.equal(fullBust.square, true);
+        assert.ok(fullBust.alpha.every(value => value > 200), `ears/shoulders missing from dither: ${fullBust.alpha}`);
         assert.equal(await p.locator('.portrait').evaluate(el => getComputedStyle(el).backgroundColor), 'rgba(0, 0, 0, 0)');
         assert.equal(await p.locator('.portrait-dither').getAttribute('aria-hidden'), 'true');
         const info = await p.locator('.portrait').evaluate(el => ({

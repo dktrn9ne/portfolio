@@ -11,3 +11,7 @@
 
 /* Let the shared cloud show through the header only while the page is at its top. */
 body{position:relative}.ink-at-top .nav{background:rgba(11,11,12,.12);backdrop-filter:none;border-bottom-color:rgba(244,241,234,.1)}.ink-at-top .nav-links a{color:var(--white)}
+/* The source cutout already contains ears and shoulders: keep its full bust. */
+.hero .portrait{align-self:start;aspect-ratio:1/1;min-height:0;margin-top:96px}.hero .portrait img{object-fit:contain;object-position:center}
+@media(min-width:901px){.hero{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr)}.hero-copy{min-width:0}}
+@media(max-width:900px){.hero .portrait{margin-top:0}}
