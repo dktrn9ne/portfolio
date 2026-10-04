@@ -11,9 +11,9 @@
       + (hash(ix, iy + 1) * (1 - u) + hash(ix + 1, iy + 1) * u) * v;
   }
   function density(x, y, field, pull = 0) {
-    const edge = .32 + field * .46 + Math.sin(x * 9) * .08 + pull;
-    const center = .18 + .82 * Math.exp(-Math.pow((x - .5) / .36, 2));
-    return smooth((edge - y) / .32) * Math.exp(-y * 2.2) * center * (.55 + .45 * field);
+    const edge = .34 + field * .50 + Math.sin(x * 9) * .09 + pull;
+    const center = .08 + .92 * Math.exp(-Math.pow((x - .5) / .36, 2));
+    return smooth((edge - y) / .26) * Math.exp(-y * 1.6) * center * (.6 + .4 * field);
   }
   if (typeof module === 'object' && module.exports) module.exports = {clamp, smooth, noise, density};
   if (typeof document === 'undefined') return;
@@ -56,7 +56,7 @@
       const ink = density(nx, ny, field, pull);
       const i = (y * w + x) * 4;
       pixels[i] = color[0]; pixels[i + 1] = color[1]; pixels[i + 2] = color[2];
-      pixels[i + 3] = Math.round(ink * 220 * (1 - smooth(ny)));
+      pixels[i + 3] = Math.round(ink * 245 * (1 - smooth(ny)));
     }
     ctx.putImageData(data, 0, 0);
   }
@@ -87,14 +87,14 @@
     else if (active()) frame = requestAnimationFrame(tick);
   }
   // No touch listeners: the decoration never captures a gesture or scroll.
-  document.querySelector('#top').addEventListener('pointermove', event => {
+  document.body.addEventListener('pointermove', event => {
     if (!fine.matches || motion.matches || event.pointerType === 'touch') return;
     const rect = stage.getBoundingClientRect();
     target.x = clamp((event.clientX - rect.left) / rect.width);
     target.y = clamp((event.clientY - rect.top) / rect.height);
     target.strength = 1 - smooth((event.clientY - rect.top - 30) / (rect.height * .7));
   }, passive);
-  document.querySelector('#top').addEventListener('pointerleave', () => { target.strength = 0; }, passive);
+  document.body.addEventListener('pointerleave', () => { target.strength = 0; }, passive);
   document.addEventListener('visibilitychange', update, passive);
   motion.addEventListener('change', update, passive);
   const observer = 'IntersectionObserver' in window ? new IntersectionObserver(entries => {
@@ -102,11 +102,13 @@
   }) : null;
   if (observer) observer.observe(stage);
   window.addEventListener('resize', resize, passive);
+  const headerState = () => document.body.classList.toggle('ink-at-top', stage.classList.contains('is-enhanced') && window.scrollY < 24);
+  window.addEventListener('scroll', headerState, passive);
   window.addEventListener('pagehide', event => {
     stop();
-    if (!event.persisted) { listeners.abort(); if (observer) observer.disconnect(); }
+    if (!event.persisted) { listeners.abort(); if (observer) observer.disconnect(); document.body.classList.remove('ink-at-top'); }
   }, passive);
-  window.addEventListener('pageshow', update, passive);
-  try { stage.append(canvas); resize(); stage.classList.add('is-enhanced'); update(); }
-  catch (_) { stop(); canvas.remove(); stage.classList.remove('is-enhanced'); }
+  window.addEventListener('pageshow', () => { headerState(); update(); }, passive);
+  try { stage.append(canvas); resize(); stage.classList.add('is-enhanced'); headerState(); update(); }
+  catch (_) { stop(); listeners.abort(); if (observer) observer.disconnect(); canvas.remove(); stage.classList.remove('is-enhanced'); document.body.classList.remove('ink-at-top'); }
 })();

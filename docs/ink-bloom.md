@@ -8,12 +8,16 @@ multiscale noise field, and fades into the existing ink background. Only a small
 area around a nearby mouse or pen deepens; two easing stages give the response
 weight while the rest continues to drift slowly.
 
-The dedicated decorative layer reaches 270px into the hero on desktop, 210px
-on tablet, and 170px on mobile, plus the height of the header above it,
-independently of the full-page `main#top`. It sits below content,
+The dedicated decorative layer starts at the actual document top and is 460px
+high on desktop, 380px on tablet, and 300px on mobile, independently of the
+full-page `main#top`. It sits below content,
 never receives pointer events, and has no accessible name or focus target.
 The portrait keeps its cutout, dither, color lens, toggle, and caption. Its empty
 background is transparent so the shallow wash can extend behind the top edge.
+The enhanced header is translucent only within 24px of the page top; scrolling
+restores its existing dark background. Failed or unavailable enhancement leaves
+the standard dark header. The shared layer avoids the former hard occlusion at
+the header boundary and gives the organic plume visible depth below navigation.
 
 The canvas is capped at 420x120 pixels, with a cached noise texture and about 15
 frames/second for a fine pointer or 10 for a coarse pointer. There are no touch
