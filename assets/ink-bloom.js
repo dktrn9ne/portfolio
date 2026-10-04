@@ -11,11 +11,27 @@
       + (hash(ix, iy + 1) * (1 - u) + hash(ix + 1, iy + 1) * u) * v;
   }
   function density(x, y, field, pull = 0) {
-    const edge = .34 + field * .50 + Math.sin(x * 9) * .09 + pull;
-    const center = .08 + .92 * Math.exp(-Math.pow((x - .5) / .36, 2));
-    return smooth((edge - y) / .26) * Math.exp(-y * 1.6) * center * (.6 + .4 * field);
+    const edge = .18 + field * .20 + Math.sin(x * 9 + field * 3) * .035 + pull;
+    const spread = Math.pow(Math.max(0, Math.sin(Math.PI * clamp(x))), .55);
+    return smooth((edge - y) / .15) * Math.exp(-y * 1.3) * spread * (.5 + .5 * smooth((field - .2) / .55));
   }
-  if (typeof module === 'object' && module.exports) module.exports = {clamp, smooth, noise, density};
+  function spring(state, target, dt, frequency, damping) {
+    const steps = Math.max(1, Math.ceil(dt / .012)), step = dt / steps;
+    for (let i = 0; i < steps; i++) for (const key of ['x', 'y', 'strength']) {
+      const velocity = 'v' + key;
+      state[velocity] = (state[velocity] || 0) + ((target[key] - state[key]) * frequency * frequency - 2 * damping * frequency * (state[velocity] || 0)) * step;
+      state[key] += state[velocity] * step;
+    }
+    return state;
+  }
+  function cursorField(x, y, near, trail) {
+    const lag = smooth(y / .42), center = near.x * (1 - lag) + trail.x * lag;
+    const width = .045 + .045 * (1 - lag), local = Math.exp(-Math.pow((x - center) / width, 2));
+    const strength = clamp(near.strength * (1 - lag) + trail.strength * lag);
+    return {local: local * strength, pull: local * strength * (.035 + clamp(near.y * (1 - lag) + trail.y * lag) * .62)};
+  }
+  const retraction = scroll => smooth(scroll / 260);
+  if (typeof module === 'object' && module.exports) module.exports = {clamp, smooth, noise, density, spring, cursorField, retraction};
   if (typeof document === 'undefined') return;
   const host = document.querySelector('.hero');
   if (!host) return;
@@ -30,7 +46,7 @@
   const fine = window.matchMedia('(pointer: fine)');
   const listeners = new AbortController();
   const passive = {passive: true, signal: listeners.signal};
-  let visible = true, frame = 0, last = 0, time = 0, w = 0, h = 0, data;
+  let visible = true, frame = 0, last = 0, time = 0, w = 0, h = 0, data, retreat = retraction(window.scrollY);
   let target = {x: .5, y: 0, strength: 0}, near = {...target}, trail = {...target};
   // Cached multiscale noise keeps the render loop small and predictable on mobile.
   const size = 128, texture = new Float32Array(size * size);
@@ -50,13 +66,14 @@
     const pixels = data.data;
     for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) {
       const nx = x / w, ny = y / h;
-      const distance = (nx - trail.x) * (nx - trail.x) / .018;
-      const pull = Math.exp(-distance) * trail.strength * .22;
-      const field = sample(nx * 98 + time * 1.4, ny * 53 - time * .7);
-      const ink = density(nx, ny, field, pull);
+      const cursor = cursorField(nx, ny, near, trail);
+      const swirl = sample(nx * 35 + time * .3, ny * 28 - time * .5) - .5;
+      const warpedX = nx * 90 + swirl * 12 - cursor.local * (trail.vx || 0) * ny * 15;
+      const field = sample(warpedX + time * 1.8, ny * 70 - time * 1.1 + swirl * 14 - cursor.local * ny * 18);
+      const ink = density(nx, ny / Math.max(.06, 1 - retreat * .94), field, cursor.pull) * (1 - retreat);
       const i = (y * w + x) * 4;
       pixels[i] = color[0]; pixels[i + 1] = color[1]; pixels[i + 2] = color[2];
-      pixels[i + 3] = Math.round(ink * 245 * (1 - smooth(ny)));
+      pixels[i + 3] = Math.round(ink * 255);
     }
     ctx.putImageData(data, 0, 0);
   }
@@ -66,17 +83,15 @@
     h = Math.max(60, Math.min(120, h));
     canvas.width = w; canvas.height = h; data = ctx.createImageData(w, h); draw();
   }
-  function active() { return !motion.matches && visible && !document.hidden; }
+  function active() { return !motion.matches && visible && !document.hidden && retreat < 1; }
   function stop() { if (frame) cancelAnimationFrame(frame); frame = 0; last = 0; }
   function tick(now) {
     frame = 0;
     if (!active()) return;
-    if (!last || now - last >= (fine.matches ? 66 : 100)) {
+    if (!last || now - last >= (fine.matches ? 40 : 100)) {
       const dt = last ? Math.min((now - last) / 1000, .12) : .066; last = now; time += dt;
-      for (const key of ['x', 'y', 'strength']) {
-        near[key] += (target[key] - near[key]) * .28;
-        trail[key] += (near[key] - trail[key]) * .12;
-      }
+      spring(near, target, dt, 19, .9);
+      spring(trail, near, dt, 8, .65);
       draw();
     }
     frame = requestAnimationFrame(tick);
@@ -92,7 +107,7 @@
     const rect = stage.getBoundingClientRect();
     target.x = clamp((event.clientX - rect.left) / rect.width);
     target.y = clamp((event.clientY - rect.top) / rect.height);
-    target.strength = 1 - smooth((event.clientY - rect.top - 30) / (rect.height * .7));
+    target.strength = 1 - smooth((event.clientY - rect.top - 65) / (rect.height * .58));
   }, passive);
   document.body.addEventListener('pointerleave', () => { target.strength = 0; }, passive);
   document.addEventListener('visibilitychange', update, passive);
@@ -103,7 +118,11 @@
   if (observer) observer.observe(stage);
   window.addEventListener('resize', resize, passive);
   const headerState = () => document.body.classList.toggle('ink-at-top', stage.classList.contains('is-enhanced') && window.scrollY < 24);
-  window.addEventListener('scroll', headerState, passive);
+  window.addEventListener('scroll', () => {
+    const wasActive = active(); retreat = retraction(window.scrollY); headerState();
+    if (motion.matches || retreat === 1) draw();
+    if (wasActive !== active()) update();
+  }, passive);
   window.addEventListener('pagehide', event => {
     stop();
     if (!event.persisted) { listeners.abort(); if (observer) observer.disconnect(); document.body.classList.remove('ink-at-top'); }
