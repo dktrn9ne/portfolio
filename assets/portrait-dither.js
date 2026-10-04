@@ -19,6 +19,12 @@
     const sourceHeight = height / scale;
     return [(imageWidth - sourceWidth) / 2, (imageHeight - sourceHeight) / 2, sourceWidth, sourceHeight];
   }
+  function containFrame(imageWidth, imageHeight, width, height) {
+    const scale = Math.min(width / imageWidth, height / imageHeight);
+    const drawnWidth = imageWidth * scale;
+    const drawnHeight = imageHeight * scale;
+    return [(width - drawnWidth) / 2, (height - drawnHeight) / 2, drawnWidth, drawnHeight];
+  }
   function paintDither(pixels, width, height, palette, variant) {
     const output = new Uint8ClampedArray(pixels.length);
     for (let y = 0; y < height; y++) for (let x = 0; x < width; x++) {
@@ -32,7 +38,7 @@
     }
     return output;
   }
-  if (typeof module !== 'undefined' && module.exports) module.exports = { lightPixel, coverCrop, paintDither };
+  if (typeof module !== 'undefined' && module.exports) module.exports = { lightPixel, coverCrop, containFrame, paintDither };
   if (typeof document === 'undefined') return;
 
   const portrait = document.querySelector('.portrait');
@@ -126,8 +132,8 @@
     if (!sampleContext) return fail();
     try {
       sampleContext.filter = getComputedStyle(image).filter;
-      sampleContext.drawImage(image, ...coverCrop(image.naturalWidth, image.naturalHeight, width, height),
-        0, 0, sample.width, sample.height);
+      // Keep the entire existing bust visible; mirror CSS object-fit: contain.
+      sampleContext.drawImage(image, ...containFrame(image.naturalWidth, image.naturalHeight, sample.width, sample.height));
       const pixels = sampleContext.getImageData(0, 0, sample.width, sample.height).data;
       const styles = getComputedStyle(portrait);
       const colors = [styles.getPropertyValue('--dither-dark').trim() || '#0b0b0c',
