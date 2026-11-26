@@ -390,6 +390,10 @@ footer h2 {
 .index-table em.corroborated {
   background: #d9d4c8;
 }
+.index-table em.pending {
+  background: transparent;
+  border: 1px solid var(--ink);
+}
 .index-table button:hover strong {
   text-decoration: underline;
   text-decoration-thickness: 2px;

@@ -90,6 +90,97 @@ const evidence = {
     href: "https://github.com/dktrn9ne/Bravado/pull/2",
     link: "Inspect merged PR",
   },
+  savage: {
+    number: "08",
+    status: "Verified",
+    title: "33 Savage video, 2017",
+    claim:
+      "The Lamorne Morris “33 Savage” video, published January 13, 2017 on the Lamorner Bros channel, displays 4,194,196 views. YouTube also abbreviates that count as 4.1M views.",
+    source: "YouTube · Lamorner Bros · as of November 26, 2026",
+    detail:
+      "The public description credits music, production, direction, and editing to other people and does not name Maurice Thomas. His role on the campaign is evidence pending. The live count replaces a resume figure of 4.1M+ views.",
+    type: "YouTube · public video",
+    href: "https://www.youtube.com/watch?v=lGcV7AUBELs",
+    link: "Watch the video",
+  },
+  channel: {
+    number: "09",
+    status: "Verified",
+    title: "Unique Access Entertainment channel",
+    claim:
+      "The Unique Access Entertainment YouTube channel displays 60.1K subscribers on its header. The About tab displays 14,613,706 views and 2,805 videos.",
+    source: "YouTube · @UniqueAccessEnt · as of November 26, 2026",
+    detail:
+      "The channel joined May 8, 2016. The header also abbreviates the catalog as 2.8K videos. It is publicly Soren Baker’s Unique Access Entertainment channel. Maurice Thomas’s marketing role there is evidence pending.",
+    type: "YouTube · channel",
+    href: "https://www.youtube.com/@UniqueAccessEnt",
+    link: "Open the channel",
+  },
+  acknowledgment: {
+    number: "10",
+    status: "Verified",
+    title: "Named in the acknowledgments",
+    claim:
+      "Named in the acknowledgments of Soren Baker’s The History of Gangster Rap (Abrams Image, 2018) for friendship and support.",
+    source: "Google Books preview · Abrams Image, 2018",
+    detail:
+      "The acknowledgments read: “Billy Johnson Jr., Shawndi Johnson, William “B-Luv” Taylor, Tracii McGregor, Tom Ruge, Aren Rostamian, Vidal Marsh, Slink Johnson, J. Wells, James Kreisberg, Omar Burgess, Maurice Thomas, Valerie Sakmary, and Andre Grant, thank you for your friendship and support.” Amazon’s sample search also lists the name in the back matter. The line is a personal thanks, not a marketing credit, and it does not say he made the book a best seller. The Abrams Image paperback is ISBN 9781419729157.",
+    type: "Google Books · preview",
+    href: "https://www.google.com/books/edition/The_History_of_Gangster_Rap/wIFnDwAAQBAJ?hl=en&gbpv=1",
+    link: "Open the Google Books preview",
+  },
+  chart: {
+    number: "11",
+    status: "Corroborated",
+    title: "First-week Amazon chart report",
+    claim:
+      "The Hype Magazine reported that The History of Gangster Rap became the No. 1 new release on Amazon’s Music History & Criticism chart during its first week in stores.",
+    source: "The Hype Magazine · October 12, 2018",
+    detail:
+      "The report covers a Barnes & Noble signing at The Grove and states the first-week chart position. It does not attribute that position to Maurice Thomas. On November 26, 2026, the Amazon paperback page showed no Best Seller badge. It listed Best Sellers Rank #256,016 in Books, #47 in Rap Music, and #188 in Music History & Criticism.",
+    type: "Press report · chart claim",
+    href: "https://www.thehypemagazine.com/2018/10/12/exclusive-the-history-of-gangster-rap-book-signing-and-qa-with-author-soren-baker-hosted-by-hip-hop-icon-dana-dane/",
+    link: "Read the report",
+  },
+  proclamation: {
+    number: "12",
+    status: "Evidence pending",
+    title: "City of Austin DKTR N9NE Day",
+    claim:
+      "The portfolio records a February 6, 2018 City of Austin mayoral proclamation, DKTR N9NE Day, as a mark of creative and cultural recognition.",
+    source: "Evidence pending · no public proclamation located",
+    detail:
+      "No city proclamation, council record, or press report naming DKTR N9NE Day or the February 6, 2018 date was found. The February 6, 2018 council page is a special called meeting on a sick-pay ordinance, not a music proclamation. The linked page explains how Austin proclamation days work and does not name DKTR N9NE.",
+    type: "Portfolio record · unverified externally",
+    href: "https://www.austintexas.gov/arts-culture/music-videos",
+    link: "How proclamation days work",
+  },
+  campaigns: {
+    number: "13",
+    status: "Evidence pending",
+    title: "Orange Line and Unique Access campaigns",
+    claim:
+      "A resume line says he supported campaign execution for Orange Line Media, Unique Access Entertainment, and Soren Baker Books, including Meta and Google Ads.",
+    source: "Companies are public · the role is not",
+    detail:
+      "Voyage LA documents Orange Line, Inc. as Soren Baker’s company, covering books, consulting, and the Unique Access Entertainment channel. Unique Access’s own about page describes the network. Neither page documents Maurice Thomas’s role, annual budgets, or ad tactics such as retargeting and lookalikes. Those resume details are not stated as fact.",
+    type: "Evidence pending",
+    href: "https://voyagela.com/interview/meet-soren-baker-orange-line-inc-glendale/",
+    link: "Read the Orange Line interview",
+  },
+  metaops: {
+    number: "14",
+    status: "Corroborated",
+    title: "Meta platform operations, 2016–2018",
+    claim:
+      "Supported Facebook Marketplace launch and business-integrity operations through policy work, escalation, and cross-functional communication.",
+    source: "LinkedIn experience record",
+    detail:
+      "This is the same corroboration as claim 06. The proof resume records a Senior Process Specialist title. The homepage still says Senior Process Executive and is left unchanged. A distinct ads-policy scope is evidence pending and is not stated as fact.",
+    type: "LinkedIn · professional history",
+    href: "https://www.linkedin.com/in/mrt45/details/experience/",
+    link: "View LinkedIn evidence",
+  },
 };
 const fields = {
   number: document.querySelector("#proof-number"),
@@ -133,3 +224,9 @@ document
       ),
     ),
   );
+function openFromHash() {
+  const key = location.hash.replace("#", "");
+  if (evidence[key]) showProof(key);
+}
+openFromHash();
+window.addEventListener("hashchange", openFromHash);
