@@ -15,3 +15,22 @@ body{position:relative}.ink-at-top .nav{background:rgba(11,11,12,.12);backdrop-f
 .hero .portrait{align-self:start;aspect-ratio:1/1;min-height:0;margin-top:96px}.hero .portrait img{object-fit:contain;object-position:center}
 @media(min-width:901px){.hero{grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr)}.hero-copy{min-width:0}}
 @media(max-width:900px){.hero .portrait{margin-top:0}}
+
+/* Marketing proof uses the paper section, with each claim tied to a public source. */
+.marketing-intro{max-width:820px;margin:-8px 0 36px;font-size:17px;line-height:1.7;color:#4d4943}
+.marketing-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.marketing-card{display:flex;flex-direction:column;gap:14px;min-width:0;padding:28px;border:1px solid #c5beb4;background:var(--white)}
+.marketing-card small{font:500 10px "DM Mono",monospace;letter-spacing:.08em;text-transform:uppercase;color:var(--accent)}
+.marketing-card small.corroborated{color:#5c5840}
+.marketing-card small.pending{color:#8a5a12}
+.marketing-card h3{margin:0;font:700 28px/1.05 Syne,sans-serif;letter-spacing:-.04em}
+.marketing-card p,.marketing-card blockquote{margin:0;font-size:15px;line-height:1.65;color:#3f3b36}
+.marketing-card cite{font-style:normal}
+.marketing-card blockquote{padding-left:14px;border-left:3px solid var(--accent)}
+.marketing-card .boundary{color:#6a645c;font-size:13px}
+.marketing-links{display:flex;flex-wrap:wrap;gap:10px 16px;margin-top:auto;padding-top:4px}
+.marketing-links a{font:500 11px "DM Mono",monospace;letter-spacing:.04em;text-transform:uppercase;text-decoration:none}
+.marketing-links a:hover{color:var(--accent)}
+.event a{color:var(--accent);text-decoration:none}
+.event a:hover{text-decoration:underline}
+@media(max-width:900px){.marketing-grid{grid-template-columns:1fr}}

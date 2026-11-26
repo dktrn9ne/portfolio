@@ -31,6 +31,18 @@ const { chromium } = require("playwright");
       "Payment integrity controls",
   );
 
+  await page.goto("http://127.0.0.1:8765/resume.html#savage", {
+    waitUntil: "networkidle",
+  });
+  await page.waitForFunction(
+    () =>
+      document.querySelector("#proof-title")?.textContent ===
+      "33 Savage video, 2017",
+  );
+  const savageHref = await page.locator("#proof-link").getAttribute("href");
+  if (!savageHref?.includes("lGcV7AUBELs"))
+    throw new Error("33 Savage proof source did not load from the hash");
+
   await page.setViewportSize({ width: 390, height: 844 });
   const overflow = await page.evaluate(
     () =>
